@@ -33,7 +33,7 @@ const checkDiagWins = (board) => {
   if (ltr === "XXX" || rtl === "XXX") return "X wins"
 }
 
-const checkWin = (board) => {
+export const checkWin = (board) => {
   const rowWin = checkRowWins(board)
   if (rowWin) {
     return rowWin
