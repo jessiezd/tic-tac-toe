@@ -1,11 +1,11 @@
 BOARD_SIZE = 3
-
 class TicTacToe {
   constructor() {
     this.board = this.createEmptyBoard(BOARD_SIZE);
     this.currentPlayer = "X";
-    this.winner = null;
     this.movesCount = 0;
+    this.hasWon = false;
+    this.maxMoves = BOARD_SIZE * BOARD_SIZE;
   }
 
   createEmptyBoard(size) {
@@ -20,19 +20,38 @@ class TicTacToe {
     return array2D;
   }
 
-  legalMoveAvailable(currentMove) {
-    currentMove < this.maxMoves;
+  legalMoveAvailable() {
+    return this.movesCount < this.maxMoves;
   }
 
   move(xPosition, yPosition) {
+    console.log("has won", this.hasWon)
+    if(this.hasWon){
+      console.log("This game has already been won!!")
+      return;
+    }
+
+    // check for legal moves
+    if (!this.legalMoveAvailable()){
+      console.log('Its a draw!! Try new game')
+      return;
+    }
+
     this.board[xPosition][yPosition] = this.currentPlayer
     this.movesCount++;
 
-    console.log(this.board)
+    // check for winner
+    this.checkWinner()
+    if(this.hasWon) {
+      console.log(`${this.currentPlayer} won!!`)
+      console.log(this.board)
+      return
+    }
 
-    if (this.winner) {
-        console.log(`${this.currentPlayer} won!!`)
-        return
+    // check for legal moves
+    if (!this.legalMoveAvailable()){
+      console.log('Its a draw!! Try new game')
+      return;
     }
 
     this.swapChance()
@@ -47,8 +66,8 @@ class TicTacToe {
   }
 
   checkWinner() {
-    boardCopy = this.board.join().replace(/,/g, '');
-    this.winner = checkWin(boardCopy)
+    const boardCopy = this.board.join().replace(/,/g, '');
+    this.hasWon = checkWin(boardCopy)
   }
 }
 
@@ -101,11 +120,16 @@ const checkWin = (board) => {
     return diaWin
   }
 
+  return false;
 }
 
 tic = new TicTacToe()
-tic.move(0,0)
-tic.move(0,1)
-tic.move(1,1)
-tic.move(1,0)
-tic.move(2,2)
+tic.move(0,0) // X
+tic.move(0,1) // O
+tic.move(0,2) // X
+tic.move(1,0) // O
+tic.move(1,1) // X
+tic.move(2,0) // O
+tic.move(2,1) // X
+tic.move(2,2) // 0
+tic.move(1,2) // X
