@@ -1,11 +1,14 @@
-BOARD_SIZE = 3
-class TicTacToe {
+export class TicTacToe {
   constructor() {
-    this.board = this.createEmptyBoard(BOARD_SIZE);
+    this.board = this.createEmptyBoard(3);
     this.currentPlayer = "X";
     this.movesCount = 0;
     this.hasWon = false;
-    this.maxMoves = BOARD_SIZE * BOARD_SIZE;
+    this.maxMoves = 3 * 3;
+  }
+
+  player() {
+    return this.currentPlayer;
   }
 
   createEmptyBoard(size) {
@@ -28,13 +31,13 @@ class TicTacToe {
     console.log("has won", this.hasWon)
     if(this.hasWon){
       console.log("This game has already been won!!")
-      return;
+      return true;
     }
 
     // check for legal moves
     if (!this.legalMoveAvailable()){
       console.log('Its a draw!! Try new game')
-      return;
+      return false;
     }
 
     this.board[xPosition][yPosition] = this.currentPlayer
@@ -45,7 +48,7 @@ class TicTacToe {
     if(this.hasWon) {
       console.log(`${this.currentPlayer} won!!`)
       console.log(this.board)
-      return
+      return true
     }
 
     // check for legal moves
@@ -55,6 +58,8 @@ class TicTacToe {
     }
 
     this.swapChance()
+
+    return false
   }
 
   swapChance() {
@@ -72,8 +77,8 @@ class TicTacToe {
 }
 
 const checkRowWins = (board) => {
-  for (let i = 0; i < board.length; i = i + BOARD_SIZE) {
-    const row = board.substring(i, i + BOARD_SIZE)
+  for (let i = 0; i < board.length; i = i + 3) {
+    const row = board.substring(i, i + 3)
 
     if (row === "OOO") return "O wins";
     if (row === "XXX") return "X wins"
@@ -81,11 +86,11 @@ const checkRowWins = (board) => {
 }
 
 const checkColWins = (board) => {
-  for (let i = 0; i < BOARD_SIZE; i++) {
+  for (let i = 0; i < 3; i++) {
     let colString = "";
     colString += board[i]
-    colString += board[i + BOARD_SIZE]
-    colString += board[i + BOARD_SIZE + BOARD_SIZE]
+    colString += board[i + 3]
+    colString += board[i + 3 + 3]
 
     if (colString === "OOO") return "O wins";
     if (colString === "XXX") return "X wins"
@@ -95,7 +100,7 @@ const checkColWins = (board) => {
 const checkDiagWins = (board) => {
   let ltr = ""
   let rtl = ""
-  for (let i = 0; i < BOARD_SIZE; i++) {
+  for (let i = 0; i < 3; i++) {
     rtl += board[(i + 1) * 2]
     ltr += board[i * 4]
   }
@@ -122,15 +127,14 @@ const checkWin = (board) => {
 
   return false;
 }
-module.exports = TicTacToe;
 
-tic = new TicTacToe()
-tic.move(0,0) // X
-tic.move(0,1) // O
-tic.move(0,2) // X
-tic.move(1,0) // O
-tic.move(1,1) // X
-tic.move(2,0) // O
-tic.move(2,1) // X
-tic.move(2,2) // 0
-tic.move(1,2) // X
+// tic = new TicTacToe()
+// tic.move(0,0) // X
+// tic.move(0,1) // O
+// tic.move(0,2) // X
+// tic.move(1,0) // O
+// tic.move(1,1) // X
+// tic.move(2,0) // O
+// tic.move(2,1) // X
+// tic.move(2,2) // 0
+// tic.move(1,2) // X
